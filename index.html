@@ -306,27 +306,26 @@
 
         <!-- THE AFTERGLOW — LIVE GUEST GALLERY -->
         <section class="py-24 px-4 relative border-t border-burgundy bg-obsidian/80 backdrop-blur-md">
-            <div class="max-w-5xl mx-auto">
-                <div class="text-center mb-16">
+            <div class="max-w-5xl mx-auto text-center">
+                <div class="mb-12">
                     <h3 class="font-serif text-3xl md:text-4xl text-softwhite mb-4">The Night, Through Your Eyes</h3>
                     <p class="text-gray-400 text-sm max-w-xl mx-auto font-light">
-                        Capture the magic of the evening. Scan the QR code to upload your photos and videos to our live shared digital gallery.
+                        Capture the magic of the evening. Scan the QR code or tap it to upload your photos and videos to our shared digital gallery.
                     </p>
                 </div>
                 
-                <div class="flex flex-col md:flex-row items-center justify-center gap-12">
-                    <div class="inline-block p-4 border border-scarlet/40 bg-[#050505] relative group shrink-0">
-                        <div class="w-48 h-48 bg-[#0a0a0a] flex items-center justify-center border border-gray-800">
-                            <span class="text-xs text-gray-500 uppercase text-center px-4">QR Code<br><br>(Awaiting URL)</span>
-                        </div>
-                        <div class="absolute -inset-1 bg-scarlet blur opacity-0 group-hover:opacity-20 transition duration-500 z-[-1]"></div>
-                    </div>
+                <div class="flex flex-col items-center justify-center gap-6">
+                    <!-- Clickable QR Code to the App Script -->
+                    <a href="https://script.google.com/macros/s/AKfycbwyOiSonCrkGAdQ89FNU9nJKyR6augm6T-Z2Y2uP76k_l3W3Lfz9xrH8lz7JACM1hFP1g/exec" target="_blank" class="inline-block p-4 border border-scarlet/40 bg-white relative group shrink-0 shadow-xl shadow-scarlet/10 hover:border-scarlet transition-colors duration-300">
+                        <!-- Dynamic QR generation using external API -->
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://script.google.com/macros/s/AKfycbwyOiSonCrkGAdQ89FNU9nJKyR6augm6T-Z2Y2uP76k_l3W3Lfz9xrH8lz7JACM1hFP1g/exec" alt="Scan to Upload Photos" class="w-48 h-48 opacity-90 group-hover:opacity-100 transition-opacity">
+                        <div class="absolute -inset-1 bg-scarlet blur opacity-0 group-hover:opacity-30 transition duration-500 z-[-1]"></div>
+                    </a>
 
-                    <div class="w-full grid grid-cols-2 md:grid-cols-3 gap-2 opacity-50 select-none">
-                        <div class="aspect-square bg-[#050505] border border-burgundy/30 flex items-center justify-center"><span class="text-[10px] text-gray-600">Waiting for uploads...</span></div>
-                        <div class="aspect-square bg-[#050505] border border-burgundy/30 flex items-center justify-center"><span class="text-[10px] text-gray-600">Waiting for uploads...</span></div>
-                        <div class="aspect-square bg-[#050505] border border-burgundy/30 hidden md:flex items-center justify-center"><span class="text-[10px] text-gray-600">Waiting for uploads...</span></div>
-                    </div>
+                    <!-- Direct Link Button for Mobile Users -->
+                    <a href="https://script.google.com/macros/s/AKfycbwyOiSonCrkGAdQ89FNU9nJKyR6augm6T-Z2Y2uP76k_l3W3Lfz9xrH8lz7JACM1hFP1g/exec" target="_blank" class="mt-4 text-xs text-scarlet tracking-widest uppercase border border-scarlet/30 px-8 py-3 hover:bg-scarlet hover:text-white transition-colors duration-300 inline-block">
+                        Open Upload Portal
+                    </a>
                 </div>
             </div>
         </section>
@@ -399,14 +398,13 @@
         // Subtly generate rising red petals
         function createPetals() {
             const container = document.getElementById('petal-container');
-            const petalCount = 15; // Kept low to not distract
+            const petalCount = 15; 
             for(let i = 0; i < petalCount; i++) {
                 let petal = document.createElement('div');
                 petal.className = 'petal';
                 petal.style.left = Math.random() * 100 + 'vw';
-                petal.style.animationDuration = (Math.random() * 15 + 15) + 's'; // 15s to 30s
+                petal.style.animationDuration = (Math.random() * 15 + 15) + 's'; 
                 petal.style.animationDelay = (Math.random() * 15) + 's';
-                // Slight random sizing
                 let scale = 0.5 + Math.random();
                 petal.style.transform = `scale(${scale}) rotate(45deg)`;
                 container.appendChild(petal);
