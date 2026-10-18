@@ -134,9 +134,9 @@
     <!-- Rising Petals Background Layer -->
     <div id="petal-container"></div>
 
-    <!-- Audio Player -->
+    <!-- Audio Player (Updated source to song.mp3) -->
     <audio id="bg-music" loop>
-        <source src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=cinematic-documentary-115669.mp3" type="audio/mpeg">
+        <source src="song.mp3" type="audio/mpeg">
     </audio>
     <button id="music-toggle" class="fixed bottom-6 right-6 z-40 bg-burgundy/50 hover:bg-scarlet border border-scarlet/30 p-3 rounded-full backdrop-blur-sm transition-all duration-300">
         <svg id="icon-play" class="w-6 h-6 text-softwhite" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -386,6 +386,8 @@
 
     <!-- Scripts -->
     <script>
+        let isPlaying = false; // Globally defined state for the audio player
+
         // Subtly generate rising red petals
         function createPetals() {
             const container = document.getElementById('petal-container');
@@ -403,10 +405,21 @@
         }
         document.addEventListener("DOMContentLoaded", createPetals);
 
-        // Intro Screen Transition
+        // Intro Screen Transition and Auto-play Music
         function enterWorld() {
             const intro = document.getElementById('intro-screen');
             const main = document.getElementById('main-content');
+            const music = document.getElementById('bg-music');
+            const iconPlay = document.getElementById('icon-play');
+            const iconPause = document.getElementById('icon-pause');
+            
+            // Start the music automatically upon entering
+            music.play().catch(e => console.log("Audio play failed:", e));
+            isPlaying = true;
+            
+            // Update UI to show the pause button since it's playing
+            iconPlay.classList.add('hidden');
+            iconPause.classList.remove('hidden');
             
             intro.style.opacity = '0';
             setTimeout(() => {
@@ -451,12 +464,11 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // Audio Player
+        // Audio Player Controls
         const music = document.getElementById('bg-music');
         const toggleBtn = document.getElementById('music-toggle');
         const iconPlay = document.getElementById('icon-play');
         const iconPause = document.getElementById('icon-pause');
-        let isPlaying = false;
 
         toggleBtn.addEventListener('click', () => {
             if (isPlaying) {
