@@ -335,34 +335,17 @@
 
         <!-- RSVP -->
         <section class="py-24 px-4 bg-gradient-to-t from-[#050505] to-transparent relative z-10">
-            <div class="max-w-xl mx-auto bg-obsidian/90 p-8 md:p-12 border border-scarlet/20 backdrop-blur-md shadow-2xl">
-                <div class="text-center mb-12">
+            <div class="max-w-xl mx-auto bg-obsidian/90 p-8 md:p-12 border border-scarlet/20 backdrop-blur-md shadow-2xl text-center">
+                <div class="mb-10">
                     <h3 class="font-serif text-3xl text-softwhite">Save Your Place</h3>
                     <p class="text-scarlet tracking-widest text-xs uppercase mt-2">By September 1, 2028</p>
+                    <p class="text-gray-400 text-sm mt-4 font-light">Scan the QR code below to confirm your attendance and secure your seat for the evening.</p>
                 </div>
 
-                <form id="rsvp-form" onsubmit="handleRSVP(event)" class="space-y-6">
-                    <div>
-                        <label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Guest Name(s)</label>
-                        <input type="text" required class="w-full bg-transparent border-b border-gray-800 py-2 text-softwhite focus:outline-none focus:border-scarlet transition-colors">
-                    </div>
-                    <div>
-                        <label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Will you attend?</label>
-                        <select required class="w-full bg-obsidian border-b border-gray-800 py-2 text-softwhite focus:outline-none focus:border-scarlet transition-colors appearance-none cursor-pointer">
-                            <option value="">Select an option</option>
-                            <option value="yes">Yes, I will be there</option>
-                            <option value="no">No, regrettably I cannot</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Message to Franz (Optional)</label>
-                        <textarea rows="3" class="w-full bg-transparent border-b border-gray-800 py-2 text-softwhite focus:outline-none focus:border-scarlet transition-colors resize-none"></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-transparent border border-scarlet text-scarlet hover:bg-scarlet hover:text-white uppercase tracking-widest py-4 text-sm transition-all duration-300 mt-4">
-                        Submit Response
-                    </button>
-                    <p id="rsvp-status" class="text-center text-xs mt-4 hidden"></p>
-                </form>
+                <div class="inline-block p-4 border border-scarlet/40 bg-white relative group shadow-xl shadow-scarlet/10 transition-colors duration-300">
+                    <img src="sampleQR.png" alt="RSVP QR Code" class="w-48 h-48 opacity-90 group-hover:opacity-100 transition-opacity object-contain">
+                    <div class="absolute -inset-1 bg-scarlet blur opacity-0 group-hover:opacity-30 transition duration-500 z-[-1]"></div>
+                </div>
             </div>
         </section>
 
@@ -576,15 +559,6 @@
                 if (!textModal.classList.contains('hidden')) closeTextModal();
             }
         });
-
-        // RSVP Form Simulation
-        function handleRSVP(e) {
-            e.preventDefault();
-            const statusEl = document.getElementById('rsvp-status');
-            statusEl.classList.remove('hidden', 'text-scarlet', 'text-green-500');
-            statusEl.textContent = "Submission simulated. Awaiting backend integration.";
-            statusEl.classList.add('text-scarlet');
-        }
 
         // Fetch Live Photos from Google Apps Script API
         const LIVE_GALLERY_API_URL = "https://script.google.com/macros/s/AKfycbwyOiSonCrkGAdQ89FNU9nJKyR6augm6T-Z2Y2uP76k_l3W3Lfz9xrH8lz7JACM1hFP1g/exec?api=true";
