@@ -306,26 +306,29 @@
 
         <!-- THE AFTERGLOW — LIVE GUEST GALLERY -->
         <section class="py-24 px-4 relative border-t border-burgundy bg-obsidian/80 backdrop-blur-md">
-            <div class="max-w-5xl mx-auto text-center">
-                <div class="mb-12">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-16">
                     <h3 class="font-serif text-3xl md:text-4xl text-softwhite mb-4">The Night, Through Your Eyes</h3>
-                    <p class="text-gray-400 text-sm max-w-xl mx-auto font-light">
+                    <p class="text-gray-400 text-sm max-w-xl mx-auto font-light mb-8">
                         Capture the magic of the evening. Scan the QR code or tap it to upload your photos and videos to our shared digital gallery.
                     </p>
+                    
+                    <div class="flex flex-col items-center justify-center gap-6 mb-16">
+                        <!-- Clickable QR Code -->
+                        <a href="https://script.google.com/macros/s/AKfycbwyOiSonCrkGAdQ89FNU9nJKyR6augm6T-Z2Y2uP76k_l3W3Lfz9xrH8lz7JACM1hFP1g/exec" target="_blank" class="inline-block p-4 border border-scarlet/40 bg-white relative group shrink-0 shadow-xl shadow-scarlet/10 hover:border-scarlet transition-colors duration-300">
+                            <!-- Dynamic QR generation using external API -->
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://script.google.com/macros/s/AKfycbwyOiSonCrkGAdQ89FNU9nJKyR6augm6T-Z2Y2uP76k_l3W3Lfz9xrH8lz7JACM1hFP1g/exec" alt="Scan to Upload Photos" class="w-36 h-36 opacity-90 group-hover:opacity-100 transition-opacity">
+                            <div class="absolute -inset-1 bg-scarlet blur opacity-0 group-hover:opacity-30 transition duration-500 z-[-1]"></div>
+                        </a>
+                        <a href="https://script.google.com/macros/s/AKfycbwyOiSonCrkGAdQ89FNU9nJKyR6augm6T-Z2Y2uP76k_l3W3Lfz9xrH8lz7JACM1hFP1g/exec" target="_blank" class="text-[10px] text-scarlet tracking-widest uppercase border-b border-scarlet/30 pb-1 hover:text-white hover:border-white transition-colors duration-300">
+                            Open Upload Portal
+                        </a>
+                    </div>
                 </div>
                 
-                <div class="flex flex-col items-center justify-center gap-6">
-                    <!-- Clickable QR Code to the App Script -->
-                    <a href="https://script.google.com/macros/s/AKfycbwyOiSonCrkGAdQ89FNU9nJKyR6augm6T-Z2Y2uP76k_l3W3Lfz9xrH8lz7JACM1hFP1g/exec" target="_blank" class="inline-block p-4 border border-scarlet/40 bg-white relative group shrink-0 shadow-xl shadow-scarlet/10 hover:border-scarlet transition-colors duration-300">
-                        <!-- Dynamic QR generation using external API -->
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://script.google.com/macros/s/AKfycbwyOiSonCrkGAdQ89FNU9nJKyR6augm6T-Z2Y2uP76k_l3W3Lfz9xrH8lz7JACM1hFP1g/exec" alt="Scan to Upload Photos" class="w-48 h-48 opacity-90 group-hover:opacity-100 transition-opacity">
-                        <div class="absolute -inset-1 bg-scarlet blur opacity-0 group-hover:opacity-30 transition duration-500 z-[-1]"></div>
-                    </a>
-
-                    <!-- Direct Link Button for Mobile Users -->
-                    <a href="https://script.google.com/macros/s/AKfycbwyOiSonCrkGAdQ89FNU9nJKyR6augm6T-Z2Y2uP76k_l3W3Lfz9xrH8lz7JACM1hFP1g/exec" target="_blank" class="mt-4 text-xs text-scarlet tracking-widest uppercase border border-scarlet/30 px-8 py-3 hover:bg-scarlet hover:text-white transition-colors duration-300 inline-block">
-                        Open Upload Portal
-                    </a>
+                <!-- DYNAMIC LIVE PHOTO WALL -->
+                <div id="live-photo-wall" class="w-full grid grid-cols-2 md:grid-cols-4 gap-2 select-none">
+                    <div class="aspect-square bg-[#050505] border border-burgundy/30 flex items-center justify-center col-span-2 md:col-span-4 py-12"><span class="text-xs text-gray-500 uppercase tracking-widest">Loading Live Photos...</span></div>
                 </div>
             </div>
         </section>
@@ -501,7 +504,6 @@
         const textModal = document.getElementById('text-modal');
         const textModalContent = document.getElementById('text-modal-content');
 
-        // Made-up data for the 18s
         const honorsData = {
             roses: ["Liam", "Noah", "Oliver", "Elijah", "James", "William", "Benjamin", "Lucas", "Henry", "Alexander", "Mason", "Michael", "Ethan", "Daniel", "Jacob", "Logan", "Jackson", "Levi"],
             candles: ["Olivia", "Emma", "Charlotte", "Amelia", "Ava", "Sophia", "Isabella", "Mia", "Evelyn", "Harper", "Luna", "Camila", "Gianna", "Elizabeth", "Eleanor", "Ella", "Abigail", "Sofia"],
@@ -583,6 +585,53 @@
             statusEl.textContent = "Submission simulated. Awaiting backend integration.";
             statusEl.classList.add('text-scarlet');
         }
+
+        // Fetch Live Photos from Google Apps Script API
+        const LIVE_GALLERY_API_URL = "https://script.google.com/macros/s/AKfycbwyOiSonCrkGAdQ89FNU9nJKyR6augm6T-Z2Y2uP76k_l3W3Lfz9xrH8lz7JACM1hFP1g/exec?api=true";
+        
+        async function fetchLivePhotos() {
+            const wall = document.getElementById('live-photo-wall');
+            try {
+                const response = await fetch(LIVE_GALLERY_API_URL, { redirect: "follow" });
+                const photos = await response.json();
+                
+                if (photos && photos.length > 0) {
+                    wall.innerHTML = ''; // clear loading state
+                    
+                    // Show up to 12 most recent photos
+                    const photosToShow = photos.slice(0, 12);
+                    
+                    photosToShow.forEach(photo => {
+                        const imgDiv = document.createElement('div');
+                        imgDiv.className = 'aspect-square bg-[#050505] border border-burgundy/30 overflow-hidden cursor-pointer group relative';
+                        imgDiv.onclick = () => openLightbox(photo.url);
+                        
+                        const img = document.createElement('img');
+                        img.src = photo.url;
+                        img.className = 'w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500';
+                        img.alt = "Live Guest Photo";
+                        
+                        const overlay = document.createElement('div');
+                        overlay.className = 'absolute inset-0 bg-scarlet/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none';
+                        
+                        imgDiv.appendChild(img);
+                        imgDiv.appendChild(overlay);
+                        wall.appendChild(imgDiv);
+                    });
+                } else {
+                    wall.innerHTML = '<div class="aspect-square bg-[#050505] border border-burgundy/30 flex items-center justify-center col-span-2 md:col-span-4 py-12"><span class="text-xs text-gray-500 uppercase tracking-widest">Awaiting the first memories...</span></div>';
+                }
+            } catch (error) {
+                console.error("Error loading live photos:", error);
+            }
+        }
+
+        // Fetch photos when page loads, and then every 15 seconds
+        document.addEventListener("DOMContentLoaded", () => {
+            fetchLivePhotos();
+            setInterval(fetchLivePhotos, 15000); 
+        });
+
     </script>
 </body>
 </html>
